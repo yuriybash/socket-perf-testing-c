@@ -221,6 +221,7 @@ void handle_client (unsigned n) {
 				}
 			}
 			free (message);
+			offsets[n] = 0;
 		}
 		offsets[n] = strlen (messages[n]);
 	} else if (length == 0 || (errno && errno != EAGAIN && errno != EWOULDBLOCK)) {
