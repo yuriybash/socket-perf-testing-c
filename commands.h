@@ -19,8 +19,9 @@ void parse_command (char *message, unsigned n);
 
 /* A function that takes a command name, the arguments, the number of
  * arguments, and the index of the user who gave the command and calls
- * the appropriate function to handle the command. */
-void handle_command (char *name, char **args, unsigned count, unsigned n);
+ * the appropriate function to handle the command. Has msg so it can
+ * free the original pointer on a server exit. */
+void handle_command (char *name, char **args, unsigned count, unsigned n, char *msg);
 
 /* Function that handles the exit command. It sends the client back
  * a message to exit using the Exit_Message character (see

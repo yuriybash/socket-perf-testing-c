@@ -68,18 +68,22 @@ void parse_command (char *message, unsigned n) {
                         handle_invalid_arguments (name, n);
                         return;
                 }
-                handle_command (name, args, count, n);
+                handle_command (name, args, count, n, message);
         }
 
 }
 
 /* A function that takes a command name, the arguments, the number of
  * arguments, and the index of the user who gave the command and calls
- * the appropriate function to handle the command. */
-void handle_command (char *name, char **args, unsigned count, unsigned n) {
+ * the appropriate function to handle the command. Needs to also have 
+ * a ptr to original msg to free if it is a server_exit. */
+void handle_command (char *name, char **args, unsigned count, unsigned n, char *msg) {
         unsigned ctr = 0;
         while (ctr < COMMAND_COUNT) {
                 if (strcmp (name, commands[ctr]) == 0) {
+			if (strcmp (name, "server_exit") == 0 && count == 0) {
+                               free (msg);
+                        }
                         command_functions [ctr] (args, count, n);
                         return;
                 }
@@ -119,6 +123,7 @@ void handle_server_exit (char **args, unsigned count, unsigned n) {
         } else {
                 close (sockets[0]);
                 socket_total--;
+		free (messages[0]);
                 int start = 0;
                 int ctr = 1;
                 while (start < socket_total) {
