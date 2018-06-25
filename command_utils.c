@@ -51,17 +51,24 @@ void sort_users (unsigned *n) {
 
 /* A simple quicksort implementation to assist sorting users. */
 void quick_sort (int lower, int upper, unsigned *n) {
-        if (lower >= upper) {
+	if (lower >= upper) {
                 return;
         }
         srand ((unsigned) time (NULL));
         int pivot = lower + (rand () % (upper - lower));
         swap_information (pivot, lower, n);
-        for (int i = lower + 1; i < upper + 1; i++) {
+        pivot = lower;
+        unsigned i = lower + 1;
+        while (i < upper + 1) {
                 if (strcmp (users[i]->name_info->name, users[pivot]->name_info->name) < 0) {
                         swap_information (pivot, i, n);
                         pivot++;
                         swap_information (pivot, i, n);
+                        if (pivot == i) {
+                                i++;
+                        }
+                } else {
+                        i++;
                 }
         }
         quick_sort (lower, pivot - 1, n);

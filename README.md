@@ -17,6 +17,8 @@ Changes since release:
 
   * Friday June 22nd 2:19 PM: Updated Makefile to change flags for CUnit tests so that cgdb can be run on the executable.
 
+  * Monday June 25th 3:45 AM: Updated starter code with a working quicksort (will require repulling starter code for show_all_statuses to work). Made changes to comments on functions students will edit.
+
 
 ## Summary
 This project is to construct a simple chatroom in C. It consists of two main parts: a server and a client both built in C. The communication is implemented via TCP sockets using the C socket interface. This is already implemented for you and is not the focus of this project (these are covered in both cs 168 and cs 162). Instead the focus of this project will be interacting with C strings, interacting with files, dealing with C memory management, interacting with the C standard library, and completing something relatively cool. To do this you will need to make modifications to both the client and the server.
@@ -182,7 +184,6 @@ At this point your server should be able to connect and send messages across mul
       * mute
       * unmute
       * show\_status
-      * show\_all\_statuses
 
 
 At this point your server and clients should be fully functional except that the server leaks memory. At this point we will return to ```user_utils.c```
@@ -201,7 +202,7 @@ There are many other c files you will not edit. You may need to read some of the
   * ```client_utils.c``` - Contains useful functions for sending messages and displaying output.
   * ```server.c``` - Contains the main server functionality. It handles the server setup, maintenance of connections, and sending of messages.
   * ```server_utils.c``` - Contains functions helpful for interpretting and generating messages. These are used to implement utility for creating commands and can be used throughout the server when strings need to be concatenated.
-  * ```commands.c``` - Contains functions that are useful in implementing commands.
+  * ```command_utils.c``` - Contains functions that are useful in implementing commands.
 
 
 ### Command Messages
@@ -436,6 +437,8 @@ Notice that valgrind can tell you where the malloc was made, where the free was 
 A good portion of this project should be tested by hand (after all whats the point of making a chatroom to interact with if you never interact with it). As a result you follow the above steps to run both programs and play around with it. You will likely want to enumerate what you have tested so you can later turn them into autograder tests.
 
 ### Autograder Testing
+
+Will be released soon.
 
 ## Submission
 There are two steps required to submit Project 1. Failure to perform both steps may result in a partial deduction.

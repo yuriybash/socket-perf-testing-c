@@ -8,21 +8,22 @@
 
 
 /* Function that finds the index at which the newline character exists in the
- * message. Returns -1 if no newline exists in the string. */
+ * message. Returns -1 if no newline exists in the string. START is in the
+ * index in the start at which the search should begin. */
 int find_message_end (char *msg, int start) {
         /* YOUR CODE HERE. */
         return -1;
 }
 
 /* Function that takes a char * which is a buffer of data received. This 
- * buffer contains 1 or messages where a message is defined as being a 
+ * buffer contains 1 or MESSAGES where a message is defined as being a 
  * series of characters ending in a newline. Its other parameter, end,
- * is the length of the first message in the buffer. If messages contains more 
+ * is the length of the first message in the buffer. If MESSAGES contains more 
  * than one message then these messages WILL NOT be separated by a null
- * terminator. However, messages will always be terminated by a null 
+ * terminator. However, MESSAGES will always be terminated by a null 
  * terminator. The function should malloc and outputs a new char * consisting 
  * of the first message (which needs end + 1 Bytes). It should also update 
- * messages so that its contents are a string that contains any remaining 
+ * MESSAGES so that its contents are a string that contains any remaining 
  * messages and just a null terminator if no more messages remain. You may 
  * want to use some combination of strlen, strcpy, and strncpy. As an 
  * important note if you elect to attempt to use strcpy or strncpy for this 
