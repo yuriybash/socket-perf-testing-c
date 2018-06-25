@@ -21,7 +21,7 @@ Changes since release:
 
   * Monday June 25th 10:47 AM: Updated starter code to fix an issue with not freeing two pointers that were reachable. **YOU NEED TO UPDATE THE STARTER CODE FOR THIS.**
 
-  * Monday June 25th 4:30 PM: Updated server.c starter code to fix an issue with not resetting the offset. This allows for a more general representation of find_message_end. **YOU NEED TO UPDATE THE STARTER CODE FOR THIS**
+  * Monday June 25th 4:35 PM: Updated server.c and client.c starter code to fix an issue with not resetting the offset. This allows for a more general representation of find_message_end. **YOU NEED TO UPDATE THE STARTER CODE FOR THIS**
 
 ## Summary
 This project is to construct a simple chatroom in C. It consists of two main parts: a server and a client both built in C. The communication is implemented via TCP sockets using the C socket interface. This is already implemented for you and is not the focus of this project (these are covered in both cs 168 and cs 162). Instead the focus of this project will be interacting with C strings, interacting with files, dealing with C memory management, interacting with the C standard library, and completing something relatively cool. To do this you will need to make modifications to both the client and the server.

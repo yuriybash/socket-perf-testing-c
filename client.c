@@ -208,6 +208,7 @@ void receive_messages () {
 			char *msg = generate_message (server_message, send_len + 1);
 			handle_server_message (msg);
 			free (msg);
+			server_offset = 0;
 		}
 		server_offset = strlen (server_message);
 	/* If the read fails because of a nonblocking reason the error should be ignored because
