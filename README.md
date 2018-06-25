@@ -7,7 +7,7 @@
 
 This section will contain any updates to the Spec/Project since its release. To obtain these updates run the command:
 
-```git pull proj1-starter```
+```git pull proj1-starter master```
 
 If you pull the starter code after the time of the update you will not need to pull the starter code to get the updates. Please follow the setup instructions to get started.
 
