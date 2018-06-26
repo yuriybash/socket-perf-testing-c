@@ -90,6 +90,8 @@ void handle_connections (int port) {
 	socket_total = 1;
 	fd_set read_set;
 	fd_set except_set;
+	printf ("Server Messages:");
+	fflush (stdout);
 	while (1) {
 		FD_ZERO (&read_set);
 		FD_ZERO (&except_set);
