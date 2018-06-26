@@ -443,11 +443,11 @@ A good portion of this project should be tested by hand (after all whats the poi
 
 ### Autograder Testing
 
-The autograding portion will consist of you writing tests in what we hope is an easy format to run your code automatically. This consists of a series of c and python processes working together and is beyond the scope of this course. Closer to the deadline we plan to release an additional file which will assess the coverage of your testing suite. The tests you write **WILL NOT** be grading but your coverage should be a useful indicator for how you expect your code to perform on our autograder.
+The autograding portion will consist of you writing tests in what we hope is an easy format. This framework will then run your code automatically. This consists of a series of C and Python processes working together and is beyond the scope of this course. Closer to the deadline we plan to release an additional file which will assess the coverage of your testing suite. The tests you write **WILL NOT** be grading but your coverage should be a useful indicator for how you expect your code to perform on our autograder.
 
 #### Changes to the server
 
-In order to support the autograder the server now outputs 
+In order to support the autograder the server now outputs:
 
 "Server messages:"
 
@@ -459,7 +459,7 @@ This testing framework is constructed to run on the hive machines only. It is no
 
 #### Setup
 
-To get the testing framework functional will only require two steps. First you will need to have the most up to date version of the starter code. As a reminder this is done with the command
+To get the testing framework functional will only require two steps. First you will need to have the most up to date version of the starter code. As a reminder this is done with the command:
 
 ```git pull proj1-starter master```
 
@@ -492,7 +492,7 @@ That's it. All you have to do is write files whose contents consist of users sen
 
   * A user can leave anytime using the \exit command and the entire program can end using the \server_exit command.
 
-You will write files by placing the contents in either **testing/tests/functionality** or **testing/tests/memory**. **YOU MAY ONLY PLACE FILES AND NOT DIRECTORY. IF YOU PLACE DIRECTORIES THEY WILL BE DELETED AS PART OF THE TEST RUNNING PROCESS.** Placing in either of these two folders has almost the same effect except placing in memory also runs the server in valgrind. This means that the code will be about 40 times slower, so you should only place files in the memory directory that are specific cases for possible memory leaks.
+You will write files by placing the contents in either **testing/tests/functionality** or **testing/tests/memory**. **YOU MAY ONLY PLACE FILES AND NOT DIRECTORIES. IF YOU PLACE DIRECTORIES THEY WILL BE DELETED AS PART OF THE TEST RUNNING PROCESS.** Placing in either of these two folders has almost the same effect except placing in memory also runs the server in valgrind. This means that the code will be about 40 times slower, so you should only place files in the memory directory that are specific cases for possible memory leaks.
 
 Additionally if you place a file in the memory directory then it must either have at least one user still connected at the end of the message streams or have the server_exit before everyone leaves.
 
@@ -524,7 +524,7 @@ So for example to run the basic.txt test that is in the memory direct or you wou
 
 #### Debugging Output
 
-The output for running a test is stored in the testing/tests/[Functionality or Memory] directory. For each test you will find 3 directory: the name with _inputs appended, the name with _outputs appended, and the name with _refs appended. Your output is stored in _outputs and the expected outputs is stored in _refs (along with the valgrind log). A diff will be produced when the suite completes telling you which files differ. You can use this to determine which tests you are failing. To actually debug these tests you run the details of the test by hand if you want to use cgdb. If the output appears completely correct when you do it by hand it is possible there is a bug in the framework and you should post on piazza.
+The output for running a test is stored in the testing/tests/[Functionality or Memory] directory. For each test you will find 3 directory: the name with _inputs appended, the name with _outputs appended, and the name with _refs appended. Your output is stored in _outputs and the expected outputs is stored in _refs (along with the valgrind log). A diff will be produced when the suite completes telling you which files differ. You can use this to determine which tests you are failing and why. To actually debug these tests you run the details of the test by hand if you want to use cgdb. If the output appears completely correct when you do it by hand it is possible there is a bug in the framework and you should post on piazza.
 
 #### Bugs
 
