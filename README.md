@@ -23,6 +23,8 @@ Changes since release:
 
   * Monday June 25th 4:35 PM: Updated server.c and client.c starter code to fix an issue with not resetting the offset. This allows for a more general representation of find_message_end. **YOU NEED TO UPDATE THE STARTER CODE FOR THIS**
 
+  * Tuesday June 26th 4:05 PM: Testing Framework released with a few sample tests. This resulted in a small change to ```server.c```, an major update to the Makefile, and a major update the to testing folder. **YOU NEED TO UPDATE THE STARTER CODE FOR THIS**
+
 ## Summary
 This project is to construct a simple chatroom in C. It consists of two main parts: a server and a client both built in C. The communication is implemented via TCP sockets using the C socket interface. This is already implemented for you and is not the focus of this project (these are covered in both cs 168 and cs 162). Instead the focus of this project will be interacting with C strings, interacting with files, dealing with C memory management, interacting with the C standard library, and completing something relatively cool. To do this you will need to make modifications to both the client and the server.
 
@@ -441,7 +443,94 @@ A good portion of this project should be tested by hand (after all whats the poi
 
 ### Autograder Testing
 
-Will be released soon.
+The autograding portion will consist of you writing tests in what we hope is an easy format to run your code automatically. This consists of a series of c and python processes working together and is beyond the scope of this course. Closer to the deadline we plan to release an additional file which will assess the coverage of your testing suite. The tests you write **WILL NOT** be grading but your coverage should be a useful indicator for how you expect your code to perform on our autograder.
+
+#### Changes to the server
+
+In order to support the autograder the server now outputs 
+
+"Server messages:"
+
+upon starting up. This allows for synchronization across the many processes that compose the autograder.
+
+#### Warning
+
+This testing framework is constructed to run on the hive machines only. It is not guarenteed to work on your own computer and the staff will not take the time to debug it. The setup instructions are only supplied for working on the hive.
+
+#### Setup
+
+To get the testing framework functional will only require two steps. First you will need to have the most up to date version of the starter code. As a reminder this is done with the command
+
+```git pull proj1-starter master```
+
+Next you will need to install a python package on the hive machine. This can be done using the command:
+
+```python2.7 -m pip install psutil```
+
+Once these two commands are complete you should be able to follow the instructions below the write your own tests and test your code.
+
+#### Writing Tests
+
+To write a test you will create a file and produce a chat log between the members. For example here is the contents of basic.txt, which is provided for you.
+
+```
+Nick: Hi
+Steven: Hi
+Steven: This is a test
+Nick: I hope we pass
+
+```
+That's it. All you have to do is write files whose contents consist of users sending messages back and forth and the testing framework will automatically produce input files, expected outputs, and run your implementation to produce the actual outputs. There are a few rules about tests:
+
+  * Each name to the left of the colon is the name of a user. Each occurance of a name is the same user speaking.
+
+  * All users will connect before any messages are sent. This is done deterministically to ensure consistent output.
+
+  * If a user is renamed the original name should still always be the name to the left of the colon.
+
+  * There are a maximum of 10 unique users and the names must adhere to the rules in the spec.
+
+  * A user can leave anytime using the \exit command and the entire program can end using the \server_exit command.
+
+You will write files by placing the contents in either **testing/tests/functionality** or **testing/tests/memory**. **YOU MAY ONLY PLACE FILES AND NOT DIRECTORY. IF YOU PLACE DIRECTORIES THEY WILL BE DELETED AS PART OF THE TEST RUNNING PROCESS.** Placing in either of these two folders has almost the same effect except placing in memory also runs the server in valgrind. This means that the code will be about 40 times slower, so you should only place files in the memory directory that are specific cases for possible memory leaks.
+
+Additionally if you place a file in the memory directory then it must either have at least one user still connected at the end of the message streams or have the server_exit before everyone leaves.
+
+#### Running your whole Testing Suite
+
+To run your whole testing suite use the command:
+
+```make run-testing```
+
+from your directory that contains the makefile. Note that since this runs every test it may take a while. If you decide you don't want to wait for all tests to finish then you can user ctrl + c to interupt it. This is the only command you should use to interrupt it.
+
+#### Running a single test
+
+If you want to run just a single test there are two different commands you can run depending on if the test you wish to run is in the functionality or memory directory. If your test is in the functionality directory then run the command:
+
+```make run-correctness-test TEST_NAME=test```
+
+in the directory with your makefile. For example to run the basic.txt test in the starter code you would type:
+
+```make run-correctness-test TEST_NAME=basic.txt```
+
+If instead you want to run the memory tests you would run
+
+```make run-mem-test TEST_NAME=test```
+
+So for example to run the basic.txt test that is in the memory direct or you would type
+
+```make run-mem-test TEST_NAME=basic.txt```
+
+#### Debugging Output
+
+The output for running a test is stored in the testing/tests/[Functionality or Memory] directory. For each test you will find 3 directory: the name with _inputs appended, the name with _outputs appended, and the name with _refs appended. Your output is stored in _outputs and the expected outputs is stored in _refs (along with the valgrind log). A diff will be produced when the suite completes telling you which files differ. You can use this to determine which tests you are failing. To actually debug these tests you run the details of the test by hand if you want to use cgdb. If the output appears completely correct when you do it by hand it is possible there is a bug in the framework and you should post on piazza.
+
+#### Bugs
+
+This framework is not perfect. Among the things that may need to be changed includes the amount of time to wait before it timesout. One bug you may experience is where server may be unable to start because it could not connect to the port selected. We are currently working on a fix but in the worst case we will check for this.
+
+If you find other bugs please post about it on piazza for us to look at.
 
 ## Submission
 There are two steps required to submit Project 1. Failure to perform both steps may result in a partial deduction.
