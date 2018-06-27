@@ -25,6 +25,8 @@ Changes since release:
 
   * Tuesday June 26th 4:05 PM: Testing Framework released with a few sample tests. This resulted in a small change to ```server.c```, an major update to the Makefile, and a major update the to testing folder. **YOU NEED TO UPDATE THE STARTER CODE FOR THIS**
 
+  * Wednesday June 27th 12:50 AM: Added a missing newline character in server.c. This is necessary to past the tests. You should **UPDATE**.
+
 ## Summary
 This project is to construct a simple chatroom in C. It consists of two main parts: a server and a client both built in C. The communication is implemented via TCP sockets using the C socket interface. This is already implemented for you and is not the focus of this project (these are covered in both cs 168 and cs 162). Instead the focus of this project will be interacting with C strings, interacting with files, dealing with C memory management, interacting with the C standard library, and completing something relatively cool. To do this you will need to make modifications to both the client and the server.
 
