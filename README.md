@@ -29,6 +29,8 @@ Changes since release:
 
   * Wednesday June 27th 12:10 PM: The show_all_statuses command is removed from the scope of what will be tested. This is because there is a bug in the starter code that would require changes to code you wrote to address. As a result you should not write any tests for show_all_statuses and there is no defined behavior for doing so.
 
+  * Wednesday June 27th 2:50 PM: Fixed a capitalization issue. You should **UPDATE** to pass tests.
+
 ## Summary
 This project is to construct a simple chatroom in C. It consists of two main parts: a server and a client both built in C. The communication is implemented via TCP sockets using the C socket interface. This is already implemented for you and is not the focus of this project (these are covered in both cs 168 and cs 162). Instead the focus of this project will be interacting with C strings, interacting with files, dealing with C memory management, interacting with the C standard library, and completing something relatively cool. To do this you will need to make modifications to both the client and the server.
 
