@@ -424,21 +424,25 @@ void sort_clients (char *input_dir) {
 	unsigned ctr = 0;
 	unsigned pos = 0;
 	while (getline (buffer, &n, leftovers) != -1 && ctr < client_count) {
-		char *msg = buffer[0];
-		msg [strlen (msg) - 1] = 0;
-		if (strcmp (msg, client_names[ctr]) == 0) {
-			if (pos != ctr) {
-				client_names[pos] = client_names[ctr];
-				client_pids[pos] = client_pids[ctr];
-			}
-			pos++;
-		} else {
-			free (client_names[ctr]);
-		}
-		free (msg);
-		buffer[0] = NULL;
-		ctr++;
-	}
+                char *msg = buffer[0];
+                msg [strlen (msg) - 1] = 0;
+                while (ctr < client_count && strcmp (msg, client_names[ctr]) >= 0) {
+                        if (strcmp (msg, client_names[ctr]) == 0) {
+                                if (pos != ctr) {
+                                        client_names[pos] = client_names[ctr];
+                                        client_pids[pos] = client_pids[ctr];
+                                }
+                                pos++;
+                                break;
+                        } else {
+                                free (client_names[ctr]);
+                                ctr++;
+                        }
+                }
+                free (msg);
+                buffer[0] = NULL;
+                ctr++;
+        }
 	free (buffer[0]);
 	free (buffer);
 	client_count = pos;
