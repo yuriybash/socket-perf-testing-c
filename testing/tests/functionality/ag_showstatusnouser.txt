@@ -1,0 +1,4 @@
+Nick: Hi
+Steven: ok
+Steven: \show_status Wow
+Steven: oops

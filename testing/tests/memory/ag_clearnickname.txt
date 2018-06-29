@@ -1,0 +1,6 @@
+Nick: Hi
+Steven: Hey
+Steven: \set_nickname Nick Riasanovsky
+Nick: Boo
+Nick: \clear_nickname
+Nick: No nickname for me

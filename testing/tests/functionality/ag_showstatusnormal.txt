@@ -1,0 +1,4 @@
+Nick: Hey
+Steven: Hi there
+Steven: \show_status Nick
+Nick: cool

@@ -1,0 +1,3 @@
+Nick: Hi
+Steven: \set_nickname Nick Loser
+Nick: Why

@@ -1,0 +1,3 @@
+Nick: Hi
+Steven: \clear_nickname Nick Steven
+Steven: Oh

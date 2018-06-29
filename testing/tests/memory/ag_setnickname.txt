@@ -1,0 +1,4 @@
+Nick: Hi
+Steven: \set_nickname Nick Juan
+Steven: Hi
+Nick: Bye
