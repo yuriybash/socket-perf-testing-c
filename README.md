@@ -33,6 +33,8 @@ Changes since release:
 
   * Thursday June 28th 2:16 AM:  Fixed a bug in testing framework where exiting users resulted in some not being detected as still alive.
 
+  * Friday June 29th 2:22 PM: Added more sample tests
+
 ## Summary
 This project is to construct a simple chatroom in C. It consists of two main parts: a server and a client both built in C. The communication is implemented via TCP sockets using the C socket interface. This is already implemented for you and is not the focus of this project (these are covered in both cs 168 and cs 162). Instead the focus of this project will be interacting with C strings, interacting with files, dealing with C memory management, interacting with the C standard library, and completing something relatively cool. To do this you will need to make modifications to both the client and the server.
 
