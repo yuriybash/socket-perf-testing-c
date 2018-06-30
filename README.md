@@ -453,7 +453,7 @@ A good portion of this project should be tested by hand (after all whats the poi
 
 ### Autograder Testing
 
-The autograding portion will consist of you writing tests in what we hope is an easy format. This framework will then run your code automatically. This consists of a series of C and Python processes working together and is beyond the scope of this course. Closer to the deadline we plan to release an additional file which will assess the coverage of your testing suite. The tests you write **WILL NOT** be grading but your coverage should be a useful indicator for how you expect your code to perform on our autograder.
+The autograding portion will consist of you writing tests in what we hope is an easy format. This framework will then run your code automatically. This consists of a series of C and Python processes working together and is beyond the scope of this course..
 
 #### Changes to the server
 
