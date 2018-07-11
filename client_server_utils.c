@@ -10,8 +10,16 @@
 /* Function that finds the index at which the newline character exists in the
  * message. Returns -1 if no newline exists in the string. START is in the
  * index in the start at which the search should begin. */
-int find_message_end (char *msg, int start) {
-        /* YOUR CODE HERE. */
+int find_message_end (char *msg, int start){
+
+        char* current_char;
+
+        for(current_char=&msg[start]; *current_char!='\0'; current_char++, start++){
+                if(*current_char=='\n'){
+                        return start;
+                }
+        }
+
         return -1;
 }
 
