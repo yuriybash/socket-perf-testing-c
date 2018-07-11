@@ -4,7 +4,7 @@ FLAGS = -g -Wall -std=c99
 
 TESTING_FLAGS = -g -Wall
 
-CUNIT = -L/home/ff/cs61c/cunit/install/lib -I/home/ff/cs61c/cunit/install/include -lcunit
+CUNIT = -L/usr/local/Cellar/cunit/2.1-3/lib -I/usr/local/Cellar/cunit/2.1-3/include -lcunit
 
 CLIENT_C = client.c client_utils.c student_client.c client_server_utils.c
 
