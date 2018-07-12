@@ -23,6 +23,7 @@ int find_message_end (char *msg, int start){
         return -1;
 }
 
+// "hello this is message 1\nAND this is message two\nTHIS IS THREE\0"
 /* Function that takes a char * which is a buffer of data received. This 
  * buffer contains 1 or MESSAGES where a message is defined as being a 
  * series of characters ending in a newline. Its other parameter, end,
@@ -39,8 +40,20 @@ int find_message_end (char *msg, int start){
  * will overlap. This means the address of any information from src cannot be 
  * the same as an address that gets written to in dst */
 char *generate_message (char *messages, int end) {
-	/* YOUR CODE HERE. */
-        return NULL;
+
+    char* extracted_message = (char*) malloc((end+1)*sizeof(char));
+    strncpy(extracted_message, messages, end);
+    *(extracted_message + end) = '\0';
+
+    int i = end;
+    for(; *(messages + i) != '\0'; i++){
+        *(messages + (i - end)) = *(messages + i);
+    };
+
+    *(messages + (i - end)) = '\0';
+
+    return extracted_message;
+
 }
 
 /* Function that terminates the program when a malloc fails. */
