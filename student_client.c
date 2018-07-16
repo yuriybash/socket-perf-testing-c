@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include <unistd.h>
 #include "client.h"
 #include "client_utils.h"
@@ -34,7 +35,22 @@ unsigned input_offset;
  * to use the send_message function that is provided for you in client_utils.h.
  * Don't forget to null terminate any string you send. */
 void process_input () {
-	/* YOUR CODE HERE. */
+     int c;
+     input_offset = 0;
+
+     while((c = getc(stdin)) != '\n'){
+         input_message[input_offset] = c;
+         input_offset++;
+     }
+
+     input_message[input_offset] = '\n';
+     input_message[input_offset+1] = '\0';
+     send_message();
+     display_prefix();
+
+     memset(input_message, 0, sizeof(input_message));
+
+
 }
 
 /* Function that takes in a whole message from a server and handles
@@ -52,7 +68,8 @@ void handle_server_message (char *msg) {
 		free (msg);
                 handle_exit ();
         } else {
-		/* YOUR CODE HERE. */
+            display_prefix();
+		    printf("%s", (msg+1));
         }
 }
 

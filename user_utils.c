@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 #include "user_utils.h"
 #include "client_server_utils.h"
@@ -21,16 +22,19 @@
 /* Function that takes in a name and creates a fresh pointer with
  * the name copied over. */
 char *create_name (char *name) {
-	/* YOUR CODE HERE. */
-    return NULL;
+    char* name_ptr = malloc((strlen(name) + 1) * sizeof(char));
+    strcpy(name_ptr, name);
+    return name_ptr;
 }
 
 /* Function that takes in a name and outputs a new name_info
  * struct having that name. You cannot assume the name is valid
  * after the function exits. */
 struct name_info *create_name_info (char *name) {
-	/* YOUR CODE HERE */
-    return NULL;
+        struct name_info *ni = (struct name_info *) malloc(sizeof(struct name_info));
+        (*ni).name = create_name(name);
+        (*ni).total_tracking = 0;
+        return ni;
 }
 
 /* Function that takes in a name and outputs a new struct user_info having
@@ -47,8 +51,15 @@ struct name_info *create_name_info (char *name) {
  * always contain a valid address whose contents are either the user's
  * nickname or the user's name. */
 struct user_info *create_user (char *name) {
-	/* YOUR CODE HERE. */
-	return NULL;
+
+	struct user_info *ui = (struct user_info *) malloc(sizeof(struct user_info));
+	(*ui).name_info = create_name_info(name);
+	(*ui).nickname = NULL;
+	(*ui).muted_total = 0;
+	(*ui).muted_capacity = 11;
+	(*ui).muted = NULL;
+
+	return ui;
 }
 
 /* Function that frees the memory associated with a user. This function
