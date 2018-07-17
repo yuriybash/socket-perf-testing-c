@@ -242,7 +242,9 @@ void handle_client (unsigned n) {
 /* Shares a message sent from the user in index n with all other users. */
 void share_user_message (char *message, unsigned n) {
 	char *messages[3];
-	messages[0] = *(users[n]->nickname);
+
+    // use name, not nickname
+    messages[0] = users[n]->name_info->name;
 	messages[1] = ":";
 	messages[2] = message;
 	char *new_message = create_message (messages, 3);
