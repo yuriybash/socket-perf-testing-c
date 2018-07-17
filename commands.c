@@ -1,6 +1,6 @@
 /* File that contains the information necessary to implement all of the
  * commands in the server.
- * Author: YOUR NAME HERE */
+ * Author: Yuriy Bash */
 
 #include <stdlib.h>
 #include <string.h>
@@ -180,10 +180,9 @@ void handle_server_exit (char **args, unsigned count, unsigned n) {
 void handle_set_nickname (char **args, unsigned count, unsigned n) {
 	/* HANDLE ANY POSSIBLE ERROR CONDITIONS */
 
-
 	/* IMPLEMENT THE CORE FUNCTIONALITY */
-
-	struct user_info *user = NULL; /* REPLACE ME */
+	struct user_info *user = find_user(args[0]);
+	*(user->nickname) = args[1];
 
 	/* WE HANDLE MESSAGE OUTPUT FOR YOU */
 	char *other_messages[6];

@@ -54,7 +54,7 @@ struct user_info *create_user (char *name) {
 
 	struct user_info *ui = (struct user_info *) malloc(sizeof(struct user_info));
 	(*ui).name_info = create_name_info(name);
-	(*ui).nickname = NULL;
+    (*ui).nickname = (char **) malloc(sizeof(char *));
 	(*ui).muted_total = 0;
 	(*ui).muted_capacity = 11;
 
