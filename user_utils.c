@@ -57,7 +57,10 @@ struct user_info *create_user (char *name) {
 	(*ui).nickname = NULL;
 	(*ui).muted_total = 0;
 	(*ui).muted_capacity = 11;
-	(*ui).muted = NULL;
+
+    struct name_info **muted_users = (struct name_info**) malloc(11 * sizeof(struct name_info*));
+
+	(*ui).muted = muted_users;
 
 	return ui;
 }
@@ -99,7 +102,11 @@ bool istaken_name (char *name) {
 /* Function that determines if a user has a nickname. */
 bool has_nickname (struct user_info *user) {
 	/* YOUR CODE HERE. */
-	return false;
+	if(user->nickname == NULL){
+	    return false;
+	} else {
+	    return (strlen(*user->nickname) > 0);
+	}
 }
 
 /* Function that takes in a name and determines if a user
@@ -113,8 +120,12 @@ bool has_nickname (struct user_info *user) {
  * yet. If a client is connected at index i but does not have user
  * information yet users[i] will be NULL. */
 bool istaken_nickname (char *name) {
-	/* YOUR CODE HERE. */
-        return false;
+    for(int i = 0; i < 11; i++){
+        if (strcmp(*users[i]->nickname, name) == 0){
+            return true;
+        }
+    }
+    return false;
 }
 
 /* Function that takes in a name and return the user who has that name as their
@@ -138,6 +149,17 @@ struct user_info *find_user (char *name) {
 /* Takes in a two users and checks if the first user has muted the second
  * user. */
 bool ismuted (struct user_info *receiving_user, struct user_info *possibly_muted_user) {
-        /* YOUR CODE HERE. */
-        return false;
+
+    struct name_info** muted_users = receiving_user->muted;
+    for(int mu_ctr = 0; mu_ctr < 11; mu_ctr++){
+
+        muted_users += mu_ctr;
+        if(*muted_users == possibly_muted_user->name_info){
+            return true;
+        }
+
+    }
+
+    return false;
+
 }
