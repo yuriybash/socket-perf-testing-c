@@ -225,7 +225,6 @@ void handle_set_nickname (char **args, unsigned count, unsigned n) {
 void handle_clear_nickname (char **args, unsigned count, unsigned n) {
 	/* HANDLE ANY POSSIBLE ERROR CONDITIONS */
 
-
 	/* IMPLEMENT THE CORE FUNCTIONALITY */
 
 	struct user_info *user = NULL; /* REPLACE ME */
@@ -275,6 +274,8 @@ void handle_rename (char **args, unsigned count, unsigned n) {
 
 
 	/* IMPLEMENT THE CORE FUCNTIONALITY */
+
+	user->name_info->name = name;
 
 
 	/* WE HANDLE MESSAGE OUTPUT FOR YOU */
