@@ -73,7 +73,22 @@ struct user_info *create_user (char *name) {
  * it will no longer be used. The only requirement for when data should
  * be freed is that all data must be freed on a proper server exit. */
 void cleanup_user (struct user_info *user) {
-	/* YOUR CODE HERE. */
+
+    for(int i = 0; i < 11; i++){
+        if (users[i] == NULL || user == users[i]){
+            continue;
+        }
+
+        for(int j = 0; j < 11; j++){
+            if ((*users[i]).muted[j] == user->name_info){
+                (*users[i]).muted[j] = NULL;
+            }
+
+        }
+    }
+    printf("IN CLEANUP_USER\n");
+    free(user);
+
 }
 
 /* Function that frees the memory assoicated with a name info. The same
