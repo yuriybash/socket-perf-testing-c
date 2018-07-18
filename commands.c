@@ -307,10 +307,10 @@ void handle_rename (char **args, unsigned count, unsigned n) {
  * function was called with, count and the index of the user who sent the
  * command. */
 void handle_mute (char **args, unsigned count, unsigned n) {
-	/* HANDLE ERROR CONDITIONS */
-
-	/* IMPLEMENT THE CORE FUNCTIONALITY */
-
+    struct user_info muter = *users[n];
+    struct user_info *mutee = find_user(args[0]);
+    muter.muted[muter.muted_total] = mutee->name_info;
+    muter.muted_total++;
 
 	/* WE HANDLE MESSAGE OUTPUT FOR YOU */
 	char *messages[3];
