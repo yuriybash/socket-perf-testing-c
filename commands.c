@@ -308,8 +308,28 @@ void handle_rename (char **args, unsigned count, unsigned n) {
  * command. */
 void handle_mute (char **args, unsigned count, unsigned n) {
     struct user_info muter = *users[n];
+
+    if (muter.muted_total >= 11){
+        printf("Maximum number of users already muted\n");
+        return;
+    }
+
     struct user_info *mutee = find_user(args[0]);
-    muter.muted[muter.muted_total] = mutee->name_info;
+
+    for(int i = 0; i < 11; i++){
+        if (muter.muted[i] == mutee->name_info){
+            printf("User already muted\n");
+            return;
+        }
+    }
+
+    for(int i = 0; i < 11; i++){
+        if(muter.muted[i] == NULL){
+            muter.muted[i] = mutee->name_info;
+            break;
+        }
+    }
+
     muter.muted_total++;
 
 	/* WE HANDLE MESSAGE OUTPUT FOR YOU */
