@@ -54,7 +54,7 @@ struct user_info *create_user (char *name) {
 
 	struct user_info *ui = (struct user_info *) malloc(sizeof(struct user_info));
 	(*ui).name_info = create_name_info(name);
-    (*ui).nickname = (char **) malloc(sizeof(char *));
+    (*ui).nickname = NULL;
 	(*ui).muted_total = 0;
 	(*ui).muted_capacity = 11;
 
@@ -101,7 +101,6 @@ bool istaken_name (char *name) {
 
 /* Function that determines if a user has a nickname. */
 bool has_nickname (struct user_info *user) {
-	/* YOUR CODE HERE. */
 	if(user->nickname == NULL){
 	    return false;
 	} else {

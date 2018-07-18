@@ -2,7 +2,8 @@
  * commands in the server.
  * Author: Yuriy Bash */
 
-#include <stdlib.h>
+#include <stdio.h>
+ #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <unistd.h>
@@ -178,10 +179,9 @@ void handle_server_exit (char **args, unsigned count, unsigned n) {
  * You do not need to check that any args passed in are either too long 
  * or consist of invalid characters, this has already been checked for you.*/
 void handle_set_nickname (char **args, unsigned count, unsigned n) {
-	/* HANDLE ANY POSSIBLE ERROR CONDITIONS */
 
-	/* IMPLEMENT THE CORE FUNCTIONALITY */
 	struct user_info *user = find_user(args[0]);
+    user->nickname = (char **) malloc(sizeof(char *));
 	*(user->nickname) = args[1];
 
 	/* WE HANDLE MESSAGE OUTPUT FOR YOU */
@@ -360,9 +360,8 @@ void handle_unmute (char **args, unsigned count, unsigned n) {
  * that any args passed in are either too long or consist of invalid
  * characters, this has already been checked for you. */
 void handle_show_status (char **args, unsigned count, unsigned n) {
-        /* HANDLE ERROR CONDITIONS. */
-
-	/* IMPLEMENT THE CORE FUNCTIONALITY */
+    struct user_info *user = find_user(args[0]);
+    output_user_status(user, n);
 }
 
 /* Function that handles the show_all_statuses command. It returns the status
