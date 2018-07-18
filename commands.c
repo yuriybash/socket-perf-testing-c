@@ -309,7 +309,7 @@ void handle_rename (char **args, unsigned count, unsigned n) {
 void handle_mute (char **args, unsigned count, unsigned n) {
     struct user_info muter = *users[n];
 
-    if (muter.muted_total >= 11){
+    if (*muter.muted_total >= 11){
         printf("Maximum number of users already muted\n");
         return;
     }
@@ -330,7 +330,7 @@ void handle_mute (char **args, unsigned count, unsigned n) {
         }
     }
 
-    muter.muted_total++;
+    (*muter.muted_total)++;
 
 	/* WE HANDLE MESSAGE OUTPUT FOR YOU */
 	char *messages[3];
@@ -353,10 +353,29 @@ void handle_mute (char **args, unsigned count, unsigned n) {
  * command. You do not need to check  that any args passed in are either too long
  * or consist of invalid characters, this has already been checked for you.*/
 void handle_unmute (char **args, unsigned count, unsigned n) {
-	/* HANDLE ERROR CONDITIONS */
 
-	/* IMPLEMENT THE CORE FUNCTIONALITY */
+    struct user_info muter = *users[n];
 
+    if(*muter.muted_total < 1){
+        printf("User doesn't have anyone muted yet!\n");
+        return;
+    }
+
+    struct user_info *mutee = find_user(args[0]);
+    bool mutee_found = false;
+
+    for(int i = 0; i < 11; i++){
+        if (muter.muted[i] == mutee->name_info){
+            muter.muted[i] = NULL;
+            (*muter.muted_total)--;
+            mutee_found = true;
+        }
+    }
+
+    if(!mutee_found){
+        printf("User is not muted!\n");
+        return;
+    }
 
 	/* WE HANDLE MESSAGE OUTPUT FOR YOU */
 	char *other_messages[3];

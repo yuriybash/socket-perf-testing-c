@@ -9,7 +9,7 @@
 struct user_info {
         struct name_info *name_info;
         char **nickname;
-        unsigned muted_total;
+        unsigned *muted_total;
         unsigned muted_capacity;
         struct name_info **muted; /* Contains a dynamically sized collection of 
                                    * muted_total distinct ptrs to name_info structs, 
