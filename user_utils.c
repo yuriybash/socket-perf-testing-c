@@ -87,6 +87,7 @@ void cleanup_user (struct user_info *user) {
         }
     }
     printf("IN CLEANUP_USER\n");
+    cleanup_name_info(user->name_info);
     free(user);
 
 }
@@ -95,7 +96,9 @@ void cleanup_user (struct user_info *user) {
  * suggestion about freeing memory as the above function applies here as
  * well. */
 void cleanup_name_info (struct name_info *info) {
-	/* YOUR CODE HERE. */
+
+    free(info);
+
 }
 
 /* Function that takes in a name and determines if it is already a user's
