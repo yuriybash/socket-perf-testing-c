@@ -314,7 +314,7 @@ void handle_mute (char **args, unsigned count, unsigned n) {
     struct user_info muter = *users[n];
 
     if (*muter.muted_total >= 11){
-        printf("Maximum number of users already muted\n");
+        reply("Maximum number of users already muted\n", n);
         return;
     }
 
@@ -322,7 +322,7 @@ void handle_mute (char **args, unsigned count, unsigned n) {
 
     for(int i = 0; i < 11; i++){
         if (muter.muted[i] == mutee->name_info){
-            printf("User already muted\n");
+            reply("User already muted\n", n);
             return;
         }
     }
@@ -361,7 +361,7 @@ void handle_unmute (char **args, unsigned count, unsigned n) {
     struct user_info muter = *users[n];
 
     if(*muter.muted_total < 1){
-        printf("User doesn't have anyone muted yet!\n");
+        reply("User doesn't have anyone muted yet!\n", n);
         return;
     }
 
@@ -377,7 +377,7 @@ void handle_unmute (char **args, unsigned count, unsigned n) {
     }
 
     if(!mutee_found){
-        printf("User is not muted!\n");
+        reply("User is not muted!\n", n);
         return;
     }
 
@@ -406,7 +406,7 @@ void handle_show_status (char **args, unsigned count, unsigned n) {
     struct user_info *user = find_user(args[0]);
 
     if(user == NULL){
-        printf("Sorry, user doesn't exist!\n");
+        reply("Sorry, user doesn't exist!\n", n);
         return;
     }
     output_user_status(user, n);

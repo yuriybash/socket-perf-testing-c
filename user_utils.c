@@ -86,7 +86,6 @@ void cleanup_user (struct user_info *user) {
 
         }
     }
-    printf("IN CLEANUP_USER\n");
     cleanup_name_info(user->name_info);
     free(user);
 
