@@ -69,7 +69,7 @@ void handle_server_message (char *msg) {
                 handle_exit ();
         } else {
             clear_prefix();
-		    printf("%s", (msg+1));
+		    printf("%s", (msg));
             display_prefix();
         }
 }

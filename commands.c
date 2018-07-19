@@ -181,6 +181,10 @@ void handle_server_exit (char **args, unsigned count, unsigned n) {
 void handle_set_nickname (char **args, unsigned count, unsigned n) {
 
 	struct user_info *user = find_user(args[0]);
+	if(user == NULL){
+	    reply("Cannot set nickname, user doesn't exist!\n\0", n);
+	    return;
+	}
     user->nickname = (char **) malloc(sizeof(char *));
 	*(user->nickname) = args[1];
 
@@ -400,6 +404,11 @@ void handle_unmute (char **args, unsigned count, unsigned n) {
  * characters, this has already been checked for you. */
 void handle_show_status (char **args, unsigned count, unsigned n) {
     struct user_info *user = find_user(args[0]);
+
+    if(user == NULL){
+        printf("Sorry, user doesn't exist!\n");
+        return;
+    }
     output_user_status(user, n);
 }
 
