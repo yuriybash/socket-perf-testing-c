@@ -1,5 +1,5 @@
 /* File that contains the information necessary to implement all of the
- * commands in the server.
+ * supported commands in the server.
  * Author: Yuriy Bash */
 
 #include <stdio.h>
@@ -26,9 +26,17 @@ void (*command_functions[COMMAND_COUNT]) (char **args, unsigned count, unsigned 
 handle_mute, handle_unmute, handle_show_status, handle_show_all_statuses};
 
 
-/* Function that takes in a message that is a command sent by user at index
- * n and parses the message into a command name and its arguments. It then
- * calls the appropriate function to handle a command with that name. */
+/*
+ * Function: parse_command
+ * -----------------------
+ * takes in a message that is a command sent by user at index n (in `users`)
+ * and parses the message into a command name and its arguments. It then calls
+ * the appropriate function to handle the command.
+ *
+ * message: the message sent by the user
+ *
+ * returns: void
+ */
 void parse_command (char *message, unsigned n) {
         int i = 0;
         while (message[i] != '\\') {
@@ -74,10 +82,22 @@ void parse_command (char *message, unsigned n) {
 
 }
 
-/* A function that takes a command name, the arguments, the number of
- * arguments, and the index of the user who gave the command and calls
- * the appropriate function to handle the command. Needs to also have 
- * a ptr to original msg to free if it is a server_exit. */
+/*
+ * Function: handle_command
+ * -----------------------
+ * takes a command name, the arguments, the number of arguments, and the index
+ * of the user who gave the command and calls the appropriate the appropriate
+ * function to handle the command. If the command is a "server_exit",  frees
+ * msg.
+ *
+ * name: the command name
+ * args: arguments the command is called with
+ * count: the number of arguments
+ * n: the index (in `users`) of the user that issues the command
+ * msg: the message
+ *
+ * returns: void
+ */
 void handle_command (char *name, char **args, unsigned count, unsigned n, char *msg) {
         unsigned ctr = 0;
         while (ctr < COMMAND_COUNT) {
@@ -94,12 +114,23 @@ void handle_command (char *name, char **args, unsigned count, unsigned n, char *
 
 }
 
-/* Function that handles the exit command. It sends the client back
- * a message to exit using the Exit_Message character (see
- * client_server_utils.h) at the start of the message. The
- * function takes in no arguments. The function is also passed in
- * the total number of args the function was called with, count and
- * the index of the user who sent the command. */
+
+/*
+ * Function: handle_exit
+ * ----------------------
+ * handles the exit command. It sends the client back a message to exit using
+ * the Exit_Message character (see client_server_utils.h) at the start of the
+ * message. The function is also passed in the total number of args the
+ * function was called with, count and the index of the user who sent the
+ * command.
+ *
+ * args: arguments the command was called with
+ * count: number of arguments the command was called with
+ * n: index (in `users`) of connecting client.
+ *
+ * returns: void
+ *
+ */
 void handle_exit (char **args, unsigned count, unsigned n) {
         if (count != 0) {
                 handle_invalid_arguments ("exit", n);
@@ -112,12 +143,21 @@ void handle_exit (char **args, unsigned count, unsigned n) {
         }
 }
 
-/* Function that handles the server_exit command. It closes all of
- * the sockets that are currently open, frees all the messages for
- * any of the users who were open and cleans up all of the remaining
- * users. The function takes in no arguments. The function is also
- * passed in the total number of args the function was called with,
- * count and the index of the user who sent the command. */
+
+/*
+ * Function: handle_server_exit
+ * ----------------------
+ * handles the server_exit  command. It closes all open sockets, frees all the
+ * messages for any of the users who were open and cleans up all of the
+ * remaining users.
+ *
+ * args: arguments the command was called with
+ * count: number of arguments the command was called with
+ * n: index (in `users`) of connecting client.
+ *
+ * returns: void
+ *
+ */
 void handle_server_exit (char **args, unsigned count, unsigned n) {
         if (count != 0) {
                 handle_invalid_arguments ("server_exit", n);
@@ -143,41 +183,22 @@ void handle_server_exit (char **args, unsigned count, unsigned n) {
         }
 }
 
-
-
-
-
-
- /* ***************************READ ME*******************************
-  * 								    *
-  *								    *
-  * This begins the section you will edit. If you encounter an error*
-  * be sure and call the handle_invalid_arguments function and then *
-  * exit the function. See handle_server_exit above for an example  *
-  * of how to use it. Also be sure and check the error conditions   *
-  * on the spec.                                                    *
-  * 					                            *
-  * A few functions you may find userful:                           *
-  *       - isvalidname (command_utils.h) 			    *
-  *       - find_user (user_utils.h)                                *
-  *       - has_nickname (user_utils.h)                             *
-  *       - create_name (user_utils.h)                              *
-  *       - output_user_status (command_utils.h)                    *
-  *                                                                 *
-  * ****************************************************************/
-
-
-
-/* Function that handles the set_nickname command. The command takes
- * exactly 2 arguments, stored in args. The first is a name which
- * must be the name of an existing user. The second is word which
- * must be a valid choice for a new name. It sets the user whose name
- * is given by the first argument's nickname to the second argument.
- * Then all messages from that user should display that nickname.
- * The function is also passed in the total number of args the function
- * was called with, count and the index of the user who sent the command.
- * You do not need to check that any args passed in are either too long 
- * or consist of invalid characters, this has already been checked for you.*/
+/*
+ * Function: handle_set_nickname
+ * ----------------------
+ * handles the set_nickname  command. 2 arguments are received, the name of the
+ * user referenced and the new nickname. The user referenced must exist, and
+ * an error is reported (to the client) if the user does not exist. Once the
+ * nickname is set, all messages received by clients from that user must have
+ * the new nickname attached to them.
+ *
+ * args: arguments the command was called with (two args: name, nickname)
+ * count: number of arguments the command was called with
+ * n: index (in `users`) of connecting client.
+ *
+ * returns: void
+ *
+ */
 void handle_set_nickname (char **args, unsigned count, unsigned n) {
 
 	struct user_info *user = find_user(args[0]);
@@ -188,7 +209,6 @@ void handle_set_nickname (char **args, unsigned count, unsigned n) {
     user->nickname = (char **) malloc(sizeof(char *));
 	*(user->nickname) = args[1];
 
-	/* WE HANDLE MESSAGE OUTPUT FOR YOU */
 	char *other_messages[6];
 	other_messages[0] = users[n]->name_info->name;
 	other_messages[1] = " set ";
@@ -213,21 +233,22 @@ void handle_set_nickname (char **args, unsigned count, unsigned n) {
 	reply (message, n);
 	free (message);
 
-	/* ANYTHING ELSE THAT NEEDS TO BE DONE? DOES ANYTHING
-	 * NEED TO BE FREED? */
 }
 
-/* Function to handle the clear_nickname command. It takes in one
- * argument, a name, which must be the name of an existing user.
- * The function removes the nickname of the user if one exists
- * and resets it to that user's name.
- * The function is also passed in the total number of args the
- * function was called with, count and the index of the user who
- * sent the command. You do not need to check that any args passed 
- * in are either too long or consist of invalid characters, this 
- * has already been checked for you. */
+/*
+ * Function: handle_clear_nickname
+ * ----------------------
+ * handles the clear_nickname command. 1 argument is received, the name of the
+ * user referenced. The user's name becomes their nickname after this is done.
+ *
+ * args: arguments the command was called with (1 arg: name)
+ * count: number of arguments the command was called with
+ * n: index (in `users`) of connecting client.
+ *
+ * returns: void
+ *
+ */
 void handle_clear_nickname (char **args, unsigned count, unsigned n) {
-	/* HANDLE ANY POSSIBLE ERROR CONDITIONS */
 
 	/* IMPLEMENT THE CORE FUNCTIONALITY */
 
@@ -254,35 +275,29 @@ void handle_clear_nickname (char **args, unsigned count, unsigned n) {
 	reply (message, n);
 	free (message);
 
-	/* ANYTHING ELSE THAT NEEDS TO BE DONE? DOES ANYTHING
-	 * NEED TO BE FREED? */
 }
 
-/* Function to handle the rename command. It takes one argument which must
- * be a valid name. The user who called the command will have their name
- * changed to the name passed in. Then any attempts to access that user
- * will need to refer to this new name and not the old one. Also if the
- * user does not have a nickname this name should be displayed instead
- * of the old name. The function is also passed in the total number of args
- * the function was called with, count and the index of the user who sent
- * the command. You do not need to check that any args passed in are either
- * too long or consist of invalid characters, this has already been checked 
- * for you.*/
+/*
+ * Function: handle_rename
+ * ----------------------
+ * handles the rename command. 1 argument is received, the name of the
+ * user referenced. The user's name becomes the supplied name after this is
+ * done.
+ *
+ * args: arguments the command was called with (1 arg: the new name)
+ * count: number of arguments the command was called with
+ * n: index (in `users`) of connecting client.
+ *
+ * returns: void
+ *
+ */
 void handle_rename (char **args, unsigned count, unsigned n) {
-	/* HANDLE ANY POSSIBLE ERROR CONDITIONS */
-
-	/* USEFUL VARIABLES PRESET FOR MESSAGE OUTPUT */
 	char *name = args[0];
 	struct user_info *user = users[n];
 	char *old_name = user->name_info->name;
 
-
-	/* IMPLEMENT THE CORE FUCNTIONALITY */
-
 	user->name_info->name = name;
 
-
-	/* WE HANDLE MESSAGE OUTPUT FOR YOU */
 	char *other_messages[4];
 	other_messages[0] = old_name;
 	other_messages[1] =" changed their name to ";
@@ -298,18 +313,23 @@ void handle_rename (char **args, unsigned count, unsigned n) {
 	reply (message, n);
 	free (message);
 
-        /* ANYTHING ELSE THAT NEEDS TO BE DONE? DOES ANYTHING
-	 * NEED TO BE FREED? */
 }
 
-/* Function to handle the mute command. It takes one argument, a name, which
- * must be the name of an existing user. If the user is not already muted
- * by the user who called the command, set that user to by muted by for the
- * user who called the command. Then all messages sent by the user who's name
- * is the first argument should not be received by the user who issued the
- * mute command. The function is also passed in the total number of args the
- * function was called with, count and the index of the user who sent the
- * command. */
+/*
+ * Function: handle_mute
+ * ----------------------
+ * handles the handle_mute command. 1 argument is received, the name of the
+ * user referenced. If the user is not already muted by the user who called
+ * the command, set that user to by muted by for the user who called the
+ * command. Then all messages sent by the user who's name is the first
+ * argument should not be received by the user who issued the mute command.
+ *
+ * args: arguments the command was called with (1 arg: the name of the user)
+ * count: number of arguments the command was called with
+ * n: index (in `users`) of connecting client.
+ *
+ *  returns: void
+ */
 void handle_mute (char **args, unsigned count, unsigned n) {
     struct user_info muter = *users[n];
 
@@ -336,7 +356,6 @@ void handle_mute (char **args, unsigned count, unsigned n) {
 
     (*muter.muted_total)++;
 
-	/* WE HANDLE MESSAGE OUTPUT FOR YOU */
 	char *messages[3];
 	messages[0] = "User ";
 	messages[1] = args[0];
@@ -345,17 +364,22 @@ void handle_mute (char **args, unsigned count, unsigned n) {
 	reply (message, n);
 	free (message);
 
-	/* ANYTHING ELSE THAT NEEDS TO BE DONE? DOES ANYTHING
-	 * NEED TO BE FREED? */
 }
 
-/* Function to handle the unmute command. It takes one argument, a name, which
- * must be the name of an existing user. If the user is currently muted by the
- * user who called the command. Then that user should resume receiving messages
- * from that user. The function is also passed in the total number of args the
- * function was called with, count and the index of the user who sent the
- * command. You do not need to check  that any args passed in are either too long
- * or consist of invalid characters, this has already been checked for you.*/
+/*
+ * Function: handle_unmute
+ * ----------------------
+ * handles the unmute command. 1 argument is received, the name of the user
+ * referenced. It takes one argument, a name, which must be the name of an
+ * existing user. If the user is currently muted by the user who called the
+ * command. Then that user should resume receiving messages from that user.
+ *
+ * args: arguments the command was called with (1 arg: the name of the user)
+ * count: number of arguments the command was called with
+ * n: index (in `users`) of connecting client.
+ *
+ * returns: void
+ */
 void handle_unmute (char **args, unsigned count, unsigned n) {
 
     struct user_info muter = *users[n];
@@ -381,7 +405,6 @@ void handle_unmute (char **args, unsigned count, unsigned n) {
         return;
     }
 
-	/* WE HANDLE MESSAGE OUTPUT FOR YOU */
 	char *other_messages[3];
 	other_messages[0] = "User ";
 	other_messages[1] = args[0];
@@ -390,18 +413,23 @@ void handle_unmute (char **args, unsigned count, unsigned n) {
 	reply (message, n);
 	free (message);
 
-	/* ANYTHING ELSE THAT NEEDS TO BE DONE? DOES ANYTHING
-	 * NEED TO BE FREED? */
 }
 
-/* Function that handles the show_status command. It takes 1 argument,
- * a name, which must be an existing user. It then display the status
- * of that user to the user who called the command. The function is
- * also passed in the total number of args the function was called with,
- * count and the index of the user who sent the command. You may find
- * the function output_user_status helpful. You do not need to check
- * that any args passed in are either too long or consist of invalid
- * characters, this has already been checked for you. */
+
+/*
+ * Function: handle_show_status
+ * ----------------------
+ * handles the show_status command. 1 argument is received, the name of the user
+ * referenced. It then displays the status of that user to the user who called
+ * the command.
+ *
+ * args: arguments the command was called with (1 arg: the name of the user)
+ * count: number of arguments the command was called with
+ * n: index (in `users`) of connecting client.
+ *
+ * returns: void
+ *
+ */
 void handle_show_status (char **args, unsigned count, unsigned n) {
     struct user_info *user = find_user(args[0]);
 
@@ -412,13 +440,20 @@ void handle_show_status (char **args, unsigned count, unsigned n) {
     output_user_status(user, n);
 }
 
-/* Function that handles the show_all_statuses command. It returns the status
- * information of all connected users in alphabetical order. It takes no arguments.
- * The function is also passed in the total number of args the function was called
- * with, count and the index of the user who sent the command. You may find the
- * functions sort_users and output_user_status (in command_utils.h)
- * helpful. You do not need to check that any args passed in are either too long 
- * or consist of invalid characters, this has already been checked for you. */
+
+/*
+ * Function: handle_show_all_statuses
+ * ----------------------
+ * handles the show_all_statuses command. It returns the status information of
+ * all connected users in alphabetical order. It takes no arguments.
+ *
+ * args: arguments the command was called with (should be 0)
+ * count: number of arguments the command was called with
+ * n: index (in `users`) of connecting client.
+ *
+ * returns: void
+ *
+ */
 void handle_show_all_statuses (char **args, unsigned count, unsigned n) {
 	if (count != 0) {
                 handle_invalid_arguments ("show_all_statuses", n);
@@ -430,9 +465,18 @@ void handle_show_all_statuses (char **args, unsigned count, unsigned n) {
         }
 }
 
-/* Function that handles a known command being called with the wrong
- * arguments. It replies to the user at index that the command name
- * was called with the wrong arguments. */
+
+/*
+ * Function: handle_invalid_arguments
+ * ----------------------------------
+ * Called when a command is called with the wrong arguments. It replies to the
+ * user at index that the command name was called with the wrong arguments.
+ *
+ * name: name of user that executed the command
+ * n: index (in `users`) of user that executed the command
+ *
+ * returns: void
+ */
 void handle_invalid_arguments (char *name, unsigned n) {
         char *start = "Incorrect arguments for ";
         char *end = " command\n";
@@ -442,8 +486,17 @@ void handle_invalid_arguments (char *name, unsigned n) {
         free (new_message);
 }
 
-/* Function that handles a command that is not known. It replies to
- * the user at index n that the command name does not exist. */
+/*
+ * Function: handle_unknown_command
+ * ----------------------------------
+ * Called when an unknown command is issued. user at index that the command
+ * issued is unknown.
+ *
+ * name: name of user that executed the command
+ * n: index (in `users`) of user that executed the command
+ *
+ * returns: void
+ */
 void handle_unknown_command (char *name, unsigned n) {
         char *start = "Unknown command ";
         char *end = "\n";
