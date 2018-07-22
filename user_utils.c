@@ -1,6 +1,6 @@
 /* File that consists of functions used to handle the information regarding
  * users that have connected to the server.
- * Author: YOUR NAME HERE */
+ * Author: Yuriy Bash */
 
 #include <stdlib.h>
 #include <stdbool.h>
@@ -9,14 +9,6 @@
 #include "user_utils.h"
 #include "client_server_utils.h"
 #include "server.h"
-
-/* * * * * * *READ ME* * * * * * * *
- *                                 *
- * BE SURE AND READ USER_UTILS.H   *
- * FOR THE DEFINITION OF THE       *
- * NAME_INFO AND USER_INFO         *
- * STRUCTS.                        *
- * * * * * * * * * * * * * * * * * */
 
 
 /* Function that takes in a name and creates a fresh pointer with
