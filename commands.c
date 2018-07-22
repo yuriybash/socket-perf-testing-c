@@ -3,7 +3,7 @@
  * Author: Yuriy Bash */
 
 #include <stdio.h>
- #include <stdlib.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <unistd.h>
@@ -239,7 +239,7 @@ void handle_set_nickname (char **args, unsigned count, unsigned n) {
  * Function: handle_clear_nickname
  * ----------------------
  * handles the clear_nickname command. 1 argument is received, the name of the
- * user referenced. The user's name becomes their nickname after this is done.
+ * user referenced. The user's nickname is cleared after this is done.
  *
  * args: arguments the command was called with (1 arg: name)
  * count: number of arguments the command was called with
@@ -250,11 +250,9 @@ void handle_set_nickname (char **args, unsigned count, unsigned n) {
  */
 void handle_clear_nickname (char **args, unsigned count, unsigned n) {
 
-	/* IMPLEMENT THE CORE FUNCTIONALITY */
+	struct user_info *user = find_user(args[0]);
+	user->nickname = &(user->name_info->name);
 
-	struct user_info *user = NULL; /* REPLACE ME */
-
-	/* WE HANDLE MESSAGE OUTPUT FOR YOU */
 	char *other_messages[4];
 	other_messages[0] = users[n]->name_info->name;
 	other_messages[1] = " has cleared ";
