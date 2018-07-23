@@ -6,27 +6,27 @@
 #include <string.h>
 #include "client_server_utils.h"
 
- /*
-  *  Function: find_message_end
-  *  --------------------------
-  *  finds the index at which the newline character exists in the message
-  *
-  *  msg: pointer to start of message
-  *  start: index at which to start search
-  *
-  *  returns: the index of the newline delimiter. -1 if newline not found.
-  */
+/*
+ *  Function: find_message_end
+ *  --------------------------
+ *  finds the index at which the newline character exists in the message
+ *
+ *  msg: pointer to start of message
+ *  start: index at which to start search
+ *
+ *  returns: the index of the newline delimiter. -1 if newline not found.
+ */
 int find_message_end (char *msg, int start){
 
-        char* current_char;
-
-        for(current_char=&msg[start]; *current_char!='\0'; current_char++, start++){
-                if(*current_char=='\n'){
-                        return start;
-                }
+    char c;
+    while((c = *(msg+start)) != '\0'){
+        if(c == '\n'){
+            return start;
         }
+        start++;
+    }
 
-        return -1;
+    return -1;
 }
 
 /*
@@ -45,13 +45,13 @@ char *generate_message (char *messages, int end) {
 
     char* extracted_message = (char*) malloc((end+1)*sizeof(char));
     strncpy(extracted_message, messages, end);
-    *(extracted_message + end) = '\0';
+    *(extracted_message + end) = '\0'; // not present on orig message in buffer
 
     int i = end;
-    for(; *(messages + i) != '\0'; i++){
+    while(*(messages + i) != '\0'){
         *(messages + (i - end)) = *(messages + i);
-    };
-
+        i++;
+    }
     *(messages + (i - end)) = '\0';
 
     return extracted_message;
@@ -67,6 +67,6 @@ char *generate_message (char *messages, int end) {
  * returns: void
  */
 void allocation_failed () {
-        fprintf (stderr, "Unable to allocate enough memory\n");
-        exit (1);
+    fprintf (stderr, "Unable to allocate enough memory\n");
+    exit (1);
 }
