@@ -11,59 +11,77 @@
 #include "server.h"
 
 
-/* Function that takes in a name and creates a fresh pointer with
- * the name copied over. */
+/*
+ * Function: create_name
+ *
+ * takes in a name and creates a fresh pointer with
+ * the name copied over.
+ *
+ * name: pointer to name
+ *
+ * returns: new pointer
+ *
+ */
 char *create_name (char *name) {
     char* name_ptr = malloc((strlen(name) + 1) * sizeof(char));
     strcpy(name_ptr, name);
     return name_ptr;
 }
 
-/* Function that takes in a name and outputs a new name_info
- * struct having that name. You cannot assume the name is valid
- * after the function exits. */
+/*
+ * Function: create_name_info
+ *
+ * takes in a name and outputs a new name_info struct having that name
+ *
+ * name: pointer to name
+ *
+ * returns: pointer to name_info struct
+ *
+ */
 struct name_info *create_name_info (char *name) {
         struct name_info *ni = (struct name_info *) malloc(sizeof(struct name_info));
-        (*ni).name = create_name(name);
-        (*ni).total_tracking = 0;
+        ni->name = create_name(name);
+        ni->total_tracking = 0;
         return ni;
 }
 
-/* Function that takes in a name and outputs a new struct user_info having
- * that name. The struct should be capable or producing correct
- * functionality immediately. You cannot assume that name will remain
- * a valid pointer after the function exits. One important detail about
- * the functionality is that while no user begins with a nickname all
- * attempts to communicate between two users involves the sender's
- * nickname. If there is no nickname then this
- * value should be the actual name of the user, but the code given 
- * DOES NOT perform a check to see if there is nickname and then
- * access the name using the name field of the user_info struct. Instead
- * it ALWAYS uses the value given by *(user->nickname), so this must 
- * always contain a valid address whose contents are either the user's
- * nickname or the user's name. */
+
+/*
+ * Function: create_name_info
+ *
+ * takes in a name and outputs a new struct user_info having that name.
+ *
+ * name: pointer to name
+ *
+ * returns: pointer to user_info struct
+ *
+ */
 struct user_info *create_user (char *name) {
 
 	struct user_info *ui = (struct user_info *) malloc(sizeof(struct user_info));
-	(*ui).name_info = create_name_info(name);
-    (*ui).nickname = NULL;
-	ui->muted_total = (unsigned *) malloc(sizeof(unsigned));
+	ui->name_info = create_name_info(name);
+	ui->nickname = NULL;
+    ui->muted_total = (unsigned *) malloc(sizeof(unsigned));
 	*(ui->muted_total) = 0;
-	(*ui).muted_capacity = MAX_CONNECTIONS;
+    ui->muted_capacity = MAX_CONNECTIONS;
 
     struct name_info **muted_users = (struct name_info**) malloc(MAX_CONNECTIONS * sizeof(struct name_info*));
-
-	(*ui).muted = muted_users;
+    ui->muted = muted_users;
 
 	return ui;
 }
 
-/* Function that frees the memory associated with a user. This function
- * should be filled out with some care as it is important that you 
- * DO NOT free any pointers that will be accessed later. It may be useful
- * to implement a system for freeing data only once you know
- * it will no longer be used. The only requirement for when data should
- * be freed is that all data must be freed on a proper server exit. */
+/*
+ * Function: cleanup_user
+ *
+ * frees the memory associated with a user. importantly, all references to that
+ * user (through other users' collection of muted users) must be cleared first.
+ *
+ * name: pointer to user_info struct, the user to be freed
+ *
+ * returns: void
+ *
+ */
 void cleanup_user (struct user_info *user) {
 
     for(int i = 0; i < MAX_CONNECTIONS; i++){
@@ -83,17 +101,30 @@ void cleanup_user (struct user_info *user) {
 
 }
 
-/* Function that frees the memory assoicated with a name info. The same
- * suggestion about freeing memory as the above function applies here as
- * well. */
+/*
+ * Function: cleanup_name_info
+ *
+ * frees the memory associated with a name_info.
+ *
+ * name: pointer to name_info struct, the name_info to be freed.
+ *
+ * returns: void
+ *
+ */
 void cleanup_name_info (struct name_info *info) {
-
     free(info);
-
 }
 
-/* Function that takes in a name and determines if it is already a user's
- * name. */
+/*
+ * Function: istaken_name
+ *
+ * checks if name is already taken
+ *
+ * name: pointer to name to check
+ *
+ * returns: bool
+ *
+ */
 bool istaken_name (char *name) {
         unsigned i = 1;
         unsigned ctr = 1;
@@ -109,7 +140,16 @@ bool istaken_name (char *name) {
         return false;
 }
 
-/* Function that determines if a user has a nickname. */
+/*
+ * Function: has_nickname
+ *
+ * checks if a user has a nickname
+ *
+ * name: pointer to user to check
+ *
+ * returns: bool
+ *
+ */
 bool has_nickname (struct user_info *user) {
 	if(user->nickname == NULL){
 	    return false;
@@ -128,6 +168,17 @@ bool has_nickname (struct user_info *user) {
  * is connected does not mean they necessarily have user information
  * yet. If a client is connected at index i but does not have user
  * information yet users[i] will be NULL. */
+
+/*
+ * Function: istaken_nickname
+ *
+ * checks if a nickname is taken by any of the existing users.
+ *
+ * name: pointer to name to check
+ *
+ * returns: bool
+ *
+ */
 bool istaken_nickname (char *name) {
     for(int i = 0; i < MAX_CONNECTIONS; i++){
         if (strcmp(*users[i]->nickname, name) == 0){
@@ -137,8 +188,17 @@ bool istaken_nickname (char *name) {
     return false;
 }
 
-/* Function that takes in a name and return the user who has that name as their
- * actual name. Returns NULL is no user has that actual name. */
+/*
+ * Function: find_user
+ *
+ * finds a user based on the name. if a user with the name exists, a pointer
+ * to the user_info is returned. otherwise, NULL is returned.
+ *
+ * name: pointer to name to check
+ *
+ * returns: pointer to user_info || NULL
+ *
+ */
 struct user_info *find_user (char *name) {
         int start = 1;
         int ctr = 1;
@@ -155,8 +215,17 @@ struct user_info *find_user (char *name) {
 }
 
 
-/* Takes in a two users and checks if the first user has muted the second
- * user. */
+/*
+ * Function: ismuted
+ *
+ * checks whether first user has muted the second user
+ *
+ * receiving_user: the first user
+ * possibly_muted_user: the second user (who may have been muted)
+ *
+ * returns: bool
+ *
+ */
 bool ismuted (struct user_info *receiving_user, struct user_info *possibly_muted_user) {
 
     struct name_info** muted_users = receiving_user->muted;
