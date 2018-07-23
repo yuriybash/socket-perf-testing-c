@@ -49,9 +49,9 @@ struct user_info *create_user (char *name) {
     (*ui).nickname = NULL;
 	ui->muted_total = (unsigned *) malloc(sizeof(unsigned));
 	*(ui->muted_total) = 0;
-	(*ui).muted_capacity = 11;
+	(*ui).muted_capacity = MAX_CONNECTIONS;
 
-    struct name_info **muted_users = (struct name_info**) malloc(11 * sizeof(struct name_info*));
+    struct name_info **muted_users = (struct name_info**) malloc(MAX_CONNECTIONS * sizeof(struct name_info*));
 
 	(*ui).muted = muted_users;
 
@@ -66,12 +66,12 @@ struct user_info *create_user (char *name) {
  * be freed is that all data must be freed on a proper server exit. */
 void cleanup_user (struct user_info *user) {
 
-    for(int i = 0; i < 11; i++){
+    for(int i = 0; i < MAX_CONNECTIONS; i++){
         if (users[i] == NULL || user == users[i]){
             continue;
         }
 
-        for(int j = 0; j < 11; j++){
+        for(int j = 0; j < MAX_CONNECTIONS; j++){
             if ((*users[i]).muted[j] == user->name_info){
                 (*users[i]).muted[j] = NULL;
             }
@@ -129,7 +129,7 @@ bool has_nickname (struct user_info *user) {
  * yet. If a client is connected at index i but does not have user
  * information yet users[i] will be NULL. */
 bool istaken_nickname (char *name) {
-    for(int i = 0; i < 11; i++){
+    for(int i = 0; i < MAX_CONNECTIONS; i++){
         if (strcmp(*users[i]->nickname, name) == 0){
             return true;
         }
@@ -160,7 +160,7 @@ struct user_info *find_user (char *name) {
 bool ismuted (struct user_info *receiving_user, struct user_info *possibly_muted_user) {
 
     struct name_info** muted_users = receiving_user->muted;
-    for(int mu_ctr = 0; mu_ctr < 11; mu_ctr++){
+    for(int mu_ctr = 0; mu_ctr < MAX_CONNECTIONS; mu_ctr++){
 
         muted_users += mu_ctr;
         if(*muted_users == possibly_muted_user->name_info){

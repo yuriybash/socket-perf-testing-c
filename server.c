@@ -27,17 +27,17 @@ void socket_error ();
  * A socket will be initialized and reset to -1 if there
  * is not active connection and index 0 will always contain
  * the socket the server uses to receive connections. */
-fd_t sockets[11];
+fd_t sockets[MAX_CONNECTIONS];
 
 /* Array of messages that have been received from each user but
  * are not yet complete. */
-char *messages [11];
+char *messages [MAX_CONNECTIONS];
 
 /* Array of user information about users who have connected. */
-struct user_info *users [11];
+struct user_info *users [MAX_CONNECTIONS];
 
 /* Array of offsets into the messages. */
-unsigned offsets [11];
+unsigned offsets [MAX_CONNECTIONS];
 
 /* The number have sockets that have currently connected. Includes
  * the servers socket that receives connections. */
@@ -80,7 +80,7 @@ void handle_connections (int port) {
 	if (listen (main_socket, 10) == -1) {
 		socket_error ();
 	}
-	memset (offsets, 0, sizeof (unsigned) * 11);
+	memset (offsets, 0, sizeof (unsigned) * MAX_CONNECTIONS);
 	messages[0] = malloc (sizeof (char) * (MAX_MESSAGE_LENGTH + 1));
 	if (messages[0] == NULL) {
 		allocation_failed ();
@@ -139,7 +139,7 @@ void handle_connections (int port) {
 				count++;
 				if (FD_ISSET (sockets[n], &read_set)) {
 					if (n == 0) {
-						if (socket_total < 11) {
+						if (socket_total < MAX_CONNECTIONS) {
 							establish_connection ();
 						}
 					} else {

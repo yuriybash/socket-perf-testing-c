@@ -207,7 +207,7 @@ void handle_set_nickname (char **args, unsigned count, unsigned n) {
 	    return;
 	}
     user->nickname = (char **) malloc(sizeof(char *));
-	*(user->nickname) = args[1];
+	*user->nickname = args[1];
 
 	char *other_messages[6];
 	other_messages[0] = users[n]->name_info->name;
@@ -251,7 +251,12 @@ void handle_set_nickname (char **args, unsigned count, unsigned n) {
 void handle_clear_nickname (char **args, unsigned count, unsigned n) {
 
 	struct user_info *user = find_user(args[0]);
-	user->nickname = &(user->name_info->name);
+    if(user == NULL){
+        reply("Cannot clear nickname, user doesn't exist!\n\0", n);
+        return;
+    }
+
+	user->nickname = &user->name_info->name;
 
 	char *other_messages[4];
 	other_messages[0] = users[n]->name_info->name;
@@ -293,7 +298,6 @@ void handle_rename (char **args, unsigned count, unsigned n) {
 	char *name = args[0];
 	struct user_info *user = users[n];
 	char *old_name = user->name_info->name;
-
 	user->name_info->name = name;
 
 	char *other_messages[4];
@@ -331,21 +335,21 @@ void handle_rename (char **args, unsigned count, unsigned n) {
 void handle_mute (char **args, unsigned count, unsigned n) {
     struct user_info muter = *users[n];
 
-    if (*muter.muted_total >= 11){
+    if (*muter.muted_total >= MAX_CONNECTIONS){
         reply("Maximum number of users already muted\n", n);
         return;
     }
 
     struct user_info *mutee = find_user(args[0]);
 
-    for(int i = 0; i < 11; i++){
+    for(int i = 0; i < MAX_CONNECTIONS; i++){
         if (muter.muted[i] == mutee->name_info){
             reply("User already muted\n", n);
             return;
         }
     }
 
-    for(int i = 0; i < 11; i++){
+    for(int i = 0; i < MAX_CONNECTIONS; i++){
         if(muter.muted[i] == NULL){
             muter.muted[i] = mutee->name_info;
             break;
@@ -390,7 +394,7 @@ void handle_unmute (char **args, unsigned count, unsigned n) {
     struct user_info *mutee = find_user(args[0]);
     bool mutee_found = false;
 
-    for(int i = 0; i < 11; i++){
+    for(int i = 0; i < MAX_CONNECTIONS; i++){
         if (muter.muted[i] == mutee->name_info){
             muter.muted[i] = NULL;
             (*muter.muted_total)--;

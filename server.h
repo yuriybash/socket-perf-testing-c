@@ -10,22 +10,24 @@
 
 #define MAX_NAME_LENGTH 251
 
+#define MAX_CONNECTIONS 11
+
 
 /* Array of sockets that will be used to send information.
  * A socket will be initialized and reset to -1 if there
  * is not active connection and index 0 will always contain
  * the socket the server uses to receive connections. */
-extern fd_t sockets[11];
+extern fd_t sockets[MAX_CONNECTIONS];
 
 /* Array of messages that have been received from each user but
  * are not yet complete. */
-extern char *messages [11];
+extern char *messages [MAX_CONNECTIONS];
 
 /* Array of user information about users who have connected. */
-extern struct user_info *users [11];
+extern struct user_info *users [MAX_CONNECTIONS];
 
 /* Array of offsets into the messages. */
-extern unsigned offsets [11];
+extern unsigned offsets [MAX_CONNECTIONS];
 
 /* The number have sockets that have currently connected. Includes
  * the servers socket that receives connections. */
