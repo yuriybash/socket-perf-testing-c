@@ -1,3 +1,3 @@
-### Simple-Chat
+### socket-perf-testing
 
-Simple socket-based chat server written in C, used for experimentation and perf testing.
+Simple socket-based chat app (server + client provided) written in C, used for experimentation and perf testing.
